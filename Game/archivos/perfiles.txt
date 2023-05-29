@@ -1,0 +1,15 @@
+004
+4
+
+6 juan2
+38 archivos\perfiles\soulsProfile004.txt
+
+5 odin
+38 archivos\perfiles\soulsProfile002.txt
+
+5 amon
+38 archivos\perfiles\soulsProfile001.txt
+
+5 Juan
+38 archivos\perfiles\soulsProfile003.txt
+

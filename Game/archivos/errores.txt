@@ -1,0 +1,7 @@
+cuando se escribe '|' al inicio, se llega a un ciclo infinito porque si.
+
+La operacion 'getName' de menu no ha sido terminada (en menu.c)
+
+a veces se petea cuando salgo de un perfil y vuelvo a entrar sin que termine el programa
+
+se crasheo al undirle 2 dos veces seguidas al pelear contra la lacra (Esto sucedio varias veces seguidas)
