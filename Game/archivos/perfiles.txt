@@ -1,15 +1,2 @@
-005
-4
-
-5 juan
-38 archivos\perfiles\soulsProfile005.txt
-
-5 amon
-38 archivos\perfiles\soulsProfile001.txt
-
-5 odin
-38 archivos\perfiles\soulsProfile002.txt
-
-6 juan2
-38 archivos\perfiles\soulsProfile004.txt
-
+000
+0

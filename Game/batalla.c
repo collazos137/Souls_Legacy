@@ -194,7 +194,7 @@ void inventarioBatalla(BattleAtack* ataquesPropios, int* stamina, int* hp, BuffB
 		printf("\n");
 		printf("----------------------------------------------------------------------\n");
 	}
-	printf("|[0] salir de invetario |[x] escoje el indice del objeto que deseas usar \n");
+	printf("|[0] salir de inventario |[x] escoje el indice del objeto que deseas usar \n");
 	opcion = inquirirOpcion(player.inventory.size + 1 );
 	if(buff->durationBuff != 0){
 		printf("Aun esta activo el efecto de %s :: [%d] turnos mas para poder usar otro item", items[buff->lastItem].name ,buff->durationBuff);
@@ -214,6 +214,7 @@ void inventarioBatalla(BattleAtack* ataquesPropios, int* stamina, int* hp, BuffB
 		buff->fuerzaBuff = items[item].danoPot;
 		buff->reducionBoss = items[item].redDamegeBoss;
 		buff->inmunidad= items[item].inmunidad;
+		--player.nInventory;
 	}
 	continuar();
 }

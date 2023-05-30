@@ -89,6 +89,8 @@ Descripcion: sobreescribe el archivo mutable dado por la cadena 'nameFile'.
 void overwriteGame(char* nameFile){
 	FILE* outputFile = fopen(nameFile,"w");
 
+	//FILE* outputFile = stdout;
+
 	if ( outputFile == NULL ){
 		fprintf( stderr , "Error: el archivo del jugador |%s| no pudo ser sobreescrito.\n", nameFile );
 	}
