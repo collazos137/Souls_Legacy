@@ -33,12 +33,15 @@ BattleAtack* playerStatisticsToBattleAtack(){
 	return b;
 }
 
-/*
-Nombre: batalla
-Descripcion: maneja la logica de la batalla, poniendo valores a estadisticas de batalla como el hp y 
-				stamina desde las 'estadisticas'. Determina los turnos y demas.
+/*	
+Nombre: batalla	
+Entrada: un entero que representa el indice del jefe en la estructura 'bosses'	
+Salida: un entero que toma 1 si se vencio al jefe correctamente, 0 de lo contrario.	
+Descripcion: maneja la logica de la batalla, poniendo valores a estadisticas de batalla como el hp y 	
+				stamina desde las 'estadisticas'. Determina los turnos y demas.	
 */
-void batalla(int boss){
+int batalla(int boss){
+	int res;
 	/* se inicializan todas las caracteristicas propias */
 	BattleAtack* ataquesPropios = playerStatisticsToBattleAtack();
 	readDiscourse(bosses[boss].entrance);
@@ -49,18 +52,36 @@ void batalla(int boss){
 
 	int hpBoss = bosses[boss].hp;
 	/* asuntos directamente de la batalla */
-	int danoBoss, danoPropio, reactivo;
+	int danoBoss, danoBossAxu, danoPropio, reactivo;
+
+	/*Usado de invetario (buffs)*/
+	BuffBatalla buff;
+	buff.durationBuff = 0;
+	buff.fuerzaBuff = 0;
+	buff.reducionBoss = 0;
+	buff.inmunidad = 0;
+	float axu;
+
 	while ((hp > 0) && (hpBoss > 0)){
-		printf("\n-------------------------------------------------------------------------------------------\n");
-		printf("Tienes %d de vida              -             %s tiene %d de vida\n",hp, bosses[boss].name, hpBoss);
-		printf("Tienes %d de stamina\n\n",stamina);
-		reactivo = turnoPropio(ataquesPropios, &danoPropio, &stamina);
+		
+		reactivo = turnoPropio(ataquesPropios, &danoPropio, &stamina, &hp, &buff, bosses[boss].name, hpBoss);
+		/* para el efecto del pergamino maldito */
+		axu = buff.reducionBoss;
+		danoBossAxu = turnoBoss(boss, buff.inmunidad);
+		danoBoss = danoBossAxu - (danoBossAxu * axu/100);
 
-		/* meter lo de inventario - pociones*/
-
-		danoBoss = turnoBoss(boss);
 		descontarHp(&hp, &hpBoss, danoPropio, danoBoss, bosses[boss].name, reactivo);
+
 		stamina += recuperacionStamina;
+		/* duracion de los Buffs*/
+		if(buff.durationBuff != 0)
+			--buff.durationBuff;
+		else{
+			buff.fuerzaBuff = 0;
+			buff.reducionBoss = 0;
+			buff.inmunidad = 0;
+		}
+		
 		continuar();
 	}
 	/* si hpBoss < 0 && hp < 0, igual has muerto, por lo que da lo mismo: te ha vencido */
@@ -82,15 +103,24 @@ void batalla(int boss){
 
 	} else {
 		printf("\n%s te ha vencido\n\n",bosses[boss].name);
-	}
+		printf("Tu fin se acerca.\n");	
+		res = 0;	
+		deleteGame();	
+		--nProfiles;	
+	}	
+	free( ataquesPropios );	
+	return res;
 }
 /*
-Nombre: turnoPropio
-Descripcion: le pregunta al usuario el movimiento que desea usar en su turno.
+Nombre: tableroBatalla
+Descripcion: muestra el tablero de batalla.
 */
-int turnoPropio(BattleAtack* ataquesPropios, int * danoPropio, int * stamina){
-	int i, opcion, reactivo;
-	
+void tableroBatalla(BattleAtack* ataquesPropios, int * stamina, int* hp, char * nombreBoss, int hpBoss){
+	int i;
+	system("cls");
+	printf("\n-------------------------------------------------------------------------------------------\n");
+	printf("Tienes %d de vida              -             %s tiene %d de vida\n",*hp,nombreBoss, hpBoss);
+	printf("Tienes %d de stamina\n\n",*stamina);
 	/* para mostrarle las opciones al usuario y que elija que ataque usar */
 	printf("Escoge un ataque:\n");
 	printf("codigo  dano  probabilidadDeImpacto  gastoDeStamina\n");
@@ -99,9 +129,26 @@ int turnoPropio(BattleAtack* ataquesPropios, int * danoPropio, int * stamina){
 			printf("  [%d]   %4d            %3d%%                 %3d       %s\n",i,ataquesPropios[i].damage,ataquesPropios[i].prob,ataquesPropios[i].stamina, ataquesPropios[i].name);
 		}
 	}
-	/*para evitar casos de que escojan uno que no puedan realizar*/
-	do{
-		opcion = inquirirOpcion(player.lenAtacks);
+	printf("===========================================================================================\n");
+	printf("  [%d] Abrir invetario \n", i);
+}
+
+/*
+Nombre: turnoPropio
+Descripcion: le pregunta al usuario el movimiento que desea usar en su turno.
+*/
+int turnoPropio(BattleAtack* ataquesPropios,int* danoPropio, int * stamina, int* hp, BuffBatalla* buff, char * nombreBoss ,int hqBoss){
+	int opcion, reactivo;
+	float axu;
+	tableroBatalla(ataquesPropios, stamina, hp, nombreBoss, hqBoss);
+	do{	
+		opcion = -1;
+		opcion = inquirirOpcion(player.lenAtacks + 1);
+		if(opcion == player.lenAtacks){
+			inventarioBatalla(ataquesPropios, stamina, hp, buff);
+			tableroBatalla(ataquesPropios, stamina, hp, nombreBoss, hqBoss);
+		}
+			
 	} while (ataquesPropios[opcion].stamina > *stamina);
 
 	/*printf("ESCOGISTES POR ALGUNA RAZON EL %d - %s",opcion,ataquesPropios[opcion].name);*/
@@ -109,12 +156,14 @@ int turnoPropio(BattleAtack* ataquesPropios, int * danoPropio, int * stamina){
 	*stamina -= ataquesPropios[opcion].stamina;
 	/* revisa si el ataque funciona con 'delay' como el parry o una futura esquivada */
 	if (ataquesPropios[opcion].reactive == 1){
-		*danoPropio = ataquesPropios[opcion].damage;
+		axu = buff->fuerzaBuff;
+		*danoPropio = (int)(ataquesPropios[opcion].damage + (ataquesPropios[opcion].damage * axu/100));
 		reactivo = ataquesPropios[opcion].prob;
 	} else{
 		reactivo = 0;
 		if (ataquesPropios[opcion].prob > probabilidad()){
-			*danoPropio = ataquesPropios[opcion].damage;
+			axu = buff->fuerzaBuff;
+			*danoPropio =  (int)(ataquesPropios[opcion].damage + (ataquesPropios[opcion].damage * axu/100));
 			printf("\nHas infligido %d de dano\n",*danoPropio);
 		} else{
 			printf("\nHas fallado tu ataque de %s\n",ataquesPropios[opcion].name);
@@ -124,18 +173,64 @@ int turnoPropio(BattleAtack* ataquesPropios, int * danoPropio, int * stamina){
 	}
 	return reactivo;
 }
+
+void inventarioBatalla(BattleAtack* ataquesPropios, int* stamina, int* hp, BuffBatalla* buff){
+	int i, opcion, item;
+	float axu;
+	system("cls");
+	fflush(stdin);
+	printf("============================ Inventario ==============================\n");
+	printf("======================================================================\n");
+	printf("----------------------------------------------------------------------\n");
+    Node* tmp = player.inventory.firts;
+	for(i = 0; i < maxInv; ++i){
+		printf("%2d. ",(i+1));
+		if(tmp != NULL){
+            printf("%s", items[ tmp->date ].name );
+            tmp = tmp->next;
+		}else{
+			printf("vacio");
+		}
+		printf("\n");
+		printf("----------------------------------------------------------------------\n");
+	}
+	printf("|[0] salir de invetario |[x] escoje el indice del objeto que deseas usar \n");
+	opcion = inquirirOpcion(player.inventory.size + 1 );
+	if(buff->durationBuff != 0){
+		printf("Aun esta activo el efecto de %s :: [%d] turnos mas para poder usar otro item", items[buff->lastItem].name ,buff->durationBuff);
+	}else if(opcion > 0){
+		item = pop(&player.inventory, opcion - 1);
+		printf("haz elegido %s\n", items[item].name);
+		buff->lastItem = item;
+		buff->durationBuff = items[item].duration - 1;
+		if(items[item].hpRec){
+			axu = items[item].hpRec;
+			*hp += (int)(*hp * axu/100);
+		}
+		if(items[item].staminaRec){
+			axu = items[item].staminaRec;
+			*stamina += (int)(*stamina * axu/100);
+		}
+		buff->fuerzaBuff = items[item].danoPot;
+		buff->reducionBoss = items[item].redDamegeBoss;
+		buff->inmunidad= items[item].inmunidad;
+	}
+	continuar();
+}
+
 /*
 Nombre: turnoBoss
 Descripcion: hace que el boss escoja utilizando probabilidades un ataque a usar
 */
-int turnoBoss(int boss){
-	int prob = probabilidad(),  i = -1, probAcum = 0, ans;
-	while ((probAcum < prob) && (i < bosses[boss].nAtacks)){
-		++i;
-		probAcum += (bosses[boss].atacks[i]).choosingProbability;
-	}
+int turnoBoss(int boss, int inmunidad){
+	int prob = probabilidad(),  i = 0, probAcum = 0, ans;
+	do {	
+		probAcum += (bosses[boss].atacks[i]).choosingProbability;	
+		++i;	
+	} while ( (probAcum < prob) && (i < bosses[boss].nAtacks) );	
+	--i;
 
-	if ((bosses[boss].atacks[i]).impactProbability > probabilidad()){
+	if (!inmunidad && (bosses[boss].atacks[i]).impactProbability > probabilidad()){
 		printf("\n%s te ataca con %s\n",bosses[boss].name, (bosses[boss].atacks[i]).name);
 		ans = (bosses[boss].atacks[i]).damage;
 	} else {

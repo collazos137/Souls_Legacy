@@ -11,61 +11,57 @@
 Nombre: writeProfiles
 Descripcion: sobreescribe el archivo que guarda los perfiles
 */
-void writeProfiles( char* ending ){
-	FILE* outputFile = fopen( allProfiles, "w");
-	if ( outputFile == NULL ){
-		fprintf( stderr , "Error: el archivo de los perfiles |%s| no pudo ser leido.\n", allProfiles );
-	}
-	Profiles *tmp = perf;
-	fprintf( outputFile, "%s\n%d\n\n", ending, nProfiles );
-
-	while ( tmp != NULL ){
-		fprintf(outputFile, "%d %s\n", tmp->lenNamePlayer, tmp->namePlayer);
-		fprintf( outputFile, "%d %s\n\n", tmp->lenFile, tmp->nameFile );
-		tmp = tmp->next;
-	}
-
-	fclose( outputFile );
+void writeProfiles( char* ending ){	
+	FILE* outputFile = fopen( allProfiles, "w");	
+	if ( outputFile == NULL ){	
+		fprintf( stderr , "Error: el archivo de los perfiles |%s| no pudo ser leido.\n", allProfiles );	
+	}	
+	Profiles *tmp = perf;	
+	if ( nProfiles == 0 ){	
+		ending[0] = '0';	
+		ending[1] = '0';	
+		ending[2] = '0';	
+	}	
+	fprintf( outputFile, "%s\n%d\n\n", ending, nProfiles );	
+	while ( tmp != NULL ){	
+		fprintf(outputFile, "%d %s\n", tmp->lenNamePlayer, tmp->namePlayer);	
+		fprintf( outputFile, "%d %s\n\n", tmp->lenFile, tmp->nameFile );	
+		tmp = tmp->next;	
+	}	
+	fclose( outputFile );	
 }
 
 /*
 Nombre: readProfiles
 Descripcion: lee el archivo que guarda los perfiles
 */
-void readProfiles(char* ending ){
-	FILE* inputFile = fopen(allProfiles, "r");
-	if ( inputFile == NULL ){
-		fprintf( stderr , "Error: el archivo de los perfiles |%s| no pudo ser leido.\n", allProfiles );
-	}
-	fgets(ending, 4, inputFile);
-	ending[3] = '\0';
-	fscanf(inputFile, "%d", &nProfiles );
-
-	/*printf("ending = %s - otro %d\n",ending,nProfiles);*/
-
-	Profiles* tmp;
-	int i;
-	char t;
-	for ( i = 0 ; i < nProfiles ; ++i ){
-		tmp = (Profiles*) malloc ( sizeof ( Profiles ) );
-
-		fscanf(inputFile, "%d", &tmp->lenNamePlayer);
-		t = getc ( inputFile );
-		tmp->namePlayer = (char*) malloc ( sizeof ( char ) * ( tmp->lenNamePlayer + 1 ) );
-		fgets(tmp->namePlayer, tmp->lenNamePlayer, inputFile );
-
-		/*printf("%d %s\n",tmp->lenNamePlayer,tmp->namePlayer);*/
-
-		fscanf( inputFile, "%d", &tmp->lenFile );
-		t = getc ( inputFile );
-		tmp->nameFile = (char*) malloc ( sizeof ( char ) * ( tmp->lenFile + 1 ) );
-		fgets ( tmp->nameFile, tmp->lenFile, inputFile );
-
-		tmp->next = perf;
-		perf = tmp;
-
-	}
-	fclose(inputFile);
+void readProfiles(char* ending ){	
+	FILE* inputFile = fopen(allProfiles, "r");	
+	if ( inputFile == NULL ){	
+		fprintf( stderr , "Error: el archivo de los perfiles |%s| no pudo ser leido.\n", allProfiles );	
+	}	
+	fgets(ending, 4, inputFile);	
+	ending[3] = '\0';	
+	fscanf(inputFile, "%d", &nProfiles );	
+	/*printf("ending = %s - otro %d\n",ending,nProfiles);*/	
+	Profiles* tmp;	
+	int i;	
+	char t;	
+	for ( i = 0 ; i < nProfiles ; ++i ){	
+		tmp = (Profiles*) malloc ( sizeof ( Profiles ) );	
+		fscanf(inputFile, "%d", &tmp->lenNamePlayer);	
+		t = getc ( inputFile );	
+		tmp->namePlayer = (char*) malloc ( sizeof ( char ) * ( tmp->lenNamePlayer ) );	
+		fgets(tmp->namePlayer, tmp->lenNamePlayer, inputFile );	
+		/*printf("%d %s\n",tmp->lenNamePlayer,tmp->namePlayer);*/	
+		fscanf( inputFile, "%d", &tmp->lenFile );	
+		t = getc ( inputFile );	
+		tmp->nameFile = (char*) malloc ( sizeof ( char ) * ( tmp->lenFile ) );	
+		fgets ( tmp->nameFile, tmp->lenFile, inputFile );	
+		tmp->next = perf;	
+		perf = tmp;	
+	}	
+	fclose(inputFile);	
 }
 /*
 Nombre: modifyEnding
@@ -80,6 +76,7 @@ void modifyEnding( char* ending){
 		if ( ending[i] > '9' ){
 			ending[i] = '0';
 			flag = 1;
+			--i;
 		}
 	}
 }
@@ -163,6 +160,32 @@ void readGame(char * nameFile){
 	}
 
 	fclose(inputFile);
+}
+/*	
+Nombre: deleteGame	
+Descripcion: borra el juego del archivo de perfiles y de la estructura 'perf'	
+*/	
+void deleteGame(){	
+	if ( perf == NULL ){	
+		fprintf(stderr, "Error: no se puede eliminar un perfil si no hay perfiles\n");	
+	} else if ( strcmp( player.name, perf->namePlayer ) == 0 ){	
+		Profiles *tmp = perf;	
+		perf = perf->next;	
+		free( tmp );	
+	} else {	
+		Profiles *tmp = perf;	
+		while ( tmp->next != NULL && strcmp( player.name, (tmp->next)->namePlayer ) != 0 ){	
+			tmp = tmp->next;	
+		}	
+		if ( tmp == NULL ){	
+			fprintf( stderr, "Error: El perfil del jugador %s no fue encontrado en la estructura de perfiles.\n", player.name );	
+		} else {	
+			Profiles *toErase = tmp->next;	
+			tmp->next = toErase->next;	
+			free( toErase );	
+		}	
+	}	
+	writeProfiles( allProfiles );	
 }
 /*
 #########################################################################################################################
@@ -259,11 +282,12 @@ void readNonMutableItems( FILE* inputFile ){
 
 		fscanf( inputFile, "%d", &items[i].rareza );
 		fscanf( inputFile, "%d", &items[i].probEncontrar );
+		fscanf( inputFile, "%d", &items[i].duration);
 		fscanf( inputFile, "%d", &items[i].staminaRec );
 		fscanf( inputFile, "%d", &items[i].danoPot );
 		fscanf( inputFile, "%d", &items[i].hpRec );
-
-
+		fscanf( inputFile, "%d", &items[i].redDamegeBoss);
+		fscanf( inputFile, "%d", &items[i].inmunidad);
 
 	}
 }
@@ -400,49 +424,44 @@ void readBossAtack(BossAtack* bossAtack, FILE* inputFile){
 
 	/*printf("%d %d %d\n",bossAtack->damage, bossAtack->impactProbability, bossAtack->choosingProbability);*/
 }
-/*
-Nombre: readNonMutableZones
-Entrada: un stream 'inputFile' del que se van a leer los datos.
-Descripcion: lee todo lo relacionado a las zonas en el archivo de informacion no mutable.
-*/
-void readNonMutableZones(FILE * inputFile){
-	fscanf(inputFile, "%d",&nZones);
-
-	/*printf("%d\n",nZones);*/
-
-	zones = (Zone*) malloc( sizeof( Zone ) * nZones );
-	int i,j, len;
-	char t;
-	for ( i = 0 ; i < nZones ; ++i){
-
-		fscanf(inputFile, "%d", &zones[i].lenName);
-		zones[i].name = (char*) malloc( sizeof( char ) * (zones[i].lenName + 1 ) );
-		t = getc(inputFile);
-		fgets(zones[i].name, zones[i].lenName, inputFile);
-
-		/*printf("zoneName: %s|\n", zones[i].name );*/
-
-
-		fscanf(inputFile, "%d", &len);
-		zones[i].descDiscourse = (char*) malloc( sizeof( char ) * (len+ 1 ) );
-		t = getc(inputFile);
-		fgets( zones[i].descDiscourse, len, inputFile);
-
-		/*printf("len = %d | disc: %s\n ", len, zones[i].descDiscourse );*/
-
-		fscanf(inputFile, "%d",&zones[i].movingOptions);
-		zones[i].toPoint = (int*) malloc( sizeof( int ) * zones[i].movingOptions );
-
-		/*printf("%d ",zonas[i].movingOptions);*/
-
-		for ( j = 0 ; j < zones[i].movingOptions ; ++j){
-			fscanf(inputFile, "%d",zones[i].toPoint+j);
-			/*printf("%d ",zonas[i].toPoint[j]);*/
-		}
-		/*printf("|\n\n");*/
-
-		fscanf(inputFile, "%d", &zones[i].boss);
-	}
+/*	
+Nombre: readNonMutableZones	
+Entrada: un stream 'inputFile' del que se van a leer los datos.	
+Descripcion: lee todo lo relacionado a las zonas en el archivo de informacion no mutable.	
+*/	
+void readNonMutableZones(FILE * inputFile){	
+	fscanf(inputFile, "%d",&nZones);	
+	/*printf("%d\n",nZones);*/	
+	zones = (Zone*) malloc( sizeof( Zone ) * nZones );	
+	int i,j, len;	
+	char t;	
+	for ( i = 0 ; i < nZones ; ++i){	
+		fscanf(inputFile, "%d", &zones[i].lenName);	
+		zones[i].name = (char*) malloc( sizeof( char ) * (zones[i].lenName + 1 ) );	
+		t = getc(inputFile);	
+		fgets(zones[i].name, zones[i].lenName, inputFile);	
+		/*printf("zoneName: %s|\n", zones[i].name );*/	
+		fscanf(inputFile, "%d", &len);	
+		zones[i].descDiscourse = (char*) malloc( sizeof( char ) * (len+ 1 ) );	
+		t = getc(inputFile);	
+		fgets( zones[i].descDiscourse, len, inputFile);	
+		fscanf( inputFile, "%d", &zones[i].lenGrafFile );	
+		if ( zones[i].lenGrafFile != -1 ){	
+			zones[i].grafFile = (char*) malloc( sizeof ( char ) * ( zones[i].lenGrafFile + 1 ) );	
+			t = getc( inputFile );	
+			fgets( zones[i].grafFile, zones[i].lenGrafFile, inputFile );	
+		}	
+		/*printf("len = %d | disc: %s\n ", len, zones[i].descDiscourse );*/	
+		fscanf(inputFile, "%d",&zones[i].movingOptions);	
+		zones[i].toPoint = (int*) malloc( sizeof( int ) * zones[i].movingOptions );	
+		/*printf("%d ",zonas[i].movingOptions);*/	
+		for ( j = 0 ; j < zones[i].movingOptions ; ++j){	
+			fscanf(inputFile, "%d",zones[i].toPoint+j);	
+			/*printf("%d ",zonas[i].toPoint[j]);*/	
+		}	
+		/*printf("|\n\n");*/	
+		fscanf(inputFile, "%d", &zones[i].boss);	
+	}	
 }
 /*
 Nombre: readGrafix
@@ -459,4 +478,3 @@ void readGrafix(char* nameFile){
 		printf("%c",c);
 	fclose(inputFile);
 }
-

@@ -24,5 +24,6 @@ Node* createNode( int );
 void pushSort( List *, int );
 void kill(List * );
 void append(List * , int );
+int pop(List *, int );
 
 #endif

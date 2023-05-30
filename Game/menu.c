@@ -4,20 +4,29 @@
 Nombre: getName
 
 */
-int getName(char** name){
-	int max = 50;/* solucionar problema de variabilidad del nombre*/
-	*name = (char*) malloc ( sizeof ( char ) * max );
-
-	printf("Escribe el nombre de tu personaje:\n> ");
-	int i = 0;
-	(*name)[i] = getc( stdin );
-	while ( i < max && (*name)[i] != '\n'){
-		++i;
-		(*name)[i] = getc( stdin );
-	}
-	(*name)[i] = '\0';
-
-	return i+1;
+int getName(char** name){	
+	List auxL = createList();	
+	char t;	
+	printf("Escribe el nombre de tu personaje:\n> ");	
+	int i = 1;	
+	fflush( stdin );	
+	t = getc( stdin );	
+	while ( t != '\n'){	
+		++i;	
+		append( &auxL, t );	
+		t = getc( stdin );	
+	}	
+	(*name) = (char*) malloc( sizeof ( char ) * i );	
+	Node *tmp = auxL.firts;	
+	i = 0;	
+	while ( tmp != NULL ){	
+		(*name)[i] = tmp->date;	
+		tmp = tmp->next;	
+		++i;	
+	}	
+	(*name)[i] = '\0';	
+	kill( &auxL );	
+	return i+1;	
 }
 /*
 #########################################################################################################################
@@ -27,6 +36,11 @@ int getName(char** name){
 #########################################################################################################################
 */
 
+/*
+Nombre: chosseClass
+Entrada: Ninguna
+Descripcion: Menu para elegir la clase de jugador
+*/
 void choseClass(){
 	int i, j;
 	system("cls");
@@ -57,45 +71,34 @@ void choseClass(){
 }
 
 
-void createNewGame ( char* ending ){
-	char archivo[lenPredFile];
-	modifyEnding( ending );
-	int aux = 0;
-	strcpy( archivo, profileFilePrefix );
-	aux += strlen( profileFilePrefix );
-	strcpy( archivo + aux, ending );
-	aux += strlen( ending );
-	strcpy( archivo + aux, profileFileExtension );
-
-
-	Profiles* tmp = (Profiles*) malloc( sizeof ( Profiles ) );
-
-	tmp->lenNamePlayer = getName(&tmp->namePlayer);
-
-	tmp->lenFile = lenPredFile;
-
-	tmp->nameFile = archivo;
-
-	tmp->next = perf;
-	perf = tmp;
-
-	++nProfiles;
-
-	writeProfiles( ending );
-
-	profileFile = tmp->nameFile;
-	/*printf("%s\n",profileFile);*/
-
-	resetInfo(); /* aqui tiene que haber un menu de escoger si quiere ser mago......etc*/
-	choseClass();
-	overwriteGame( profileFile );
-
-	player.lenName = tmp->lenNamePlayer;
-	player.name = tmp->namePlayer;
-
-	readDiscourse( zones[myZone].descDiscourse );
-
-	menuPrincipal();
+void createNewGame ( char* ending ){	
+	Profiles* tmp = (Profiles*) malloc( sizeof ( Profiles ) );	
+	tmp->nameFile = (char*) malloc( sizeof( char ) * lenPredFile );	
+	modifyEnding( ending );	
+	int aux = 0;	
+	strcpy( tmp->nameFile, profileFilePrefix );	
+	aux += strlen( profileFilePrefix );	
+	strcpy( tmp->nameFile + aux, ending );	
+		
+	aux += strlen( ending );	
+		
+	strcpy( tmp->nameFile + aux, profileFileExtension );	
+	/*printf("nameFile = %s\n", tmp->nameFile );*/	
+	tmp->lenNamePlayer = getName(&tmp->namePlayer);	
+	tmp->lenFile = lenPredFile;	
+	tmp->next = perf;	
+	perf = tmp;	
+	++nProfiles;	
+	writeProfiles( ending );	
+	profileFile = tmp->nameFile;	
+	/*printf("%s\n",profileFile);*/	
+	resetInfo();	
+	choseClass();	
+	overwriteGame( profileFile );	
+	player.lenName = tmp->lenNamePlayer;	
+	player.name = tmp->namePlayer;	
+	readDiscourse( zones[myZone].descDiscourse );	
+	menuPrincipal();	
 }
 /*
 Nombre: bigMenu
@@ -430,7 +433,6 @@ void mostrarInventario(){
 		printf("\n");
 		printf("----------------------------------------------------------------------\n");
 	}
-
 }
 /*===============================================================================================================================================================================================================================*/
 /*5. bestiario (Opcion del menu principal)*/

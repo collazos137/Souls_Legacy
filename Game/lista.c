@@ -71,3 +71,27 @@ void pushSort(List* list, int num){
     }
     list->size++;
 }
+
+int pop(List* list, int num){
+	int ans = -1;
+	if(num < list->size && num >= 0){
+		--list->size;
+		Node* ax1 = list->firts;
+		if(num == 0){
+			ans = list->firts->date;
+			list->firts = ax1->next;
+			free(ax1);
+		}else{
+			int i;
+			Node* ax2;
+			for(i = 0; i < num - 1; ++i){
+				ax1 = ax1->next;
+			}
+			ans = ax1->next->date;
+			ax2 = ax1->next;
+			ax1->next = ax2->next;
+			free(ax2);
+		}
+	}
+	return ans;
+}

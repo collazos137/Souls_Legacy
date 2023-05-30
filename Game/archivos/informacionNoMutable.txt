@@ -1,53 +1,63 @@
 10
 
-14 reino trilogy
-36 archivos\zonas\zonaReinoTrilogy.txt
-1 1
+14 reino trilogy	
+36 archivos\zonas\zonaReinoTrilogy.txt	
+38 archivos\graficos\graReinoTrilogy.txt	
+1 1	
 -1
 
-19 Desierto montanoso
-41 archivos\zonas\zonaDesiertoMontanoso.txt
-2 0 2
-0
+19 Desierto montanoso	
+41 archivos\zonas\zonaDesiertoMontanoso.txt	
+-1	
+2 0 2	
+0	
 
-26 Campamento de exploracion
-45 archivos\zonas\zonaCampamentoExploracion.txt
-2 1 3
--1
+26 Campamento de exploracion	
+45 archivos\zonas\zonaCampamentoExploracion.txt	
+-1	
+2 1 3	
+-1	
 
-14 Bosque magico
-36 archivos\zonas\zonaBosqueMagico.txt
-2 2 4
-1
+14 Bosque magico	
+36 archivos\zonas\zonaBosqueMagico.txt	
+-1	
+2 2 4	
+1	
 
-16 Valle corrosivo
-38 archivos\zonas\zonaValleCorrosivo.txt
-2 3 5
--1
+16 Valle corrosivo	
+38 archivos\zonas\zonaValleCorrosivo.txt	
+-1	
+2 3 5	
+-1	
 
-16 Tierras muertas
-38 archivos\zonas\zonaTierrasMuertas.txt
-2 4 6
-2
+16 Tierras muertas	
+38 archivos\zonas\zonaTierrasMuertas.txt	
+-1	
+2 4 6	
+2	
 
-17 Manantial de paz
-36 archivos\zonas\zonaManantialPaz.txt
-2 5 7
--1
+17 Manantial de paz	
+36 archivos\zonas\zonaManantialPaz.txt	
+-1	
+2 5 7	
+-1	
 
-20 cordilleras elficas
-29 archivos\zonas\zonaElfos.txt
-2 6 8
-3
+20 cordilleras elficas	
+29 archivos\zonas\zonaElfos.txt	
+-1	
+2 6 8	
+3	
 
-30 Beherit el territorio amenaza
-31 archivos\zonas\zonaBeherit.txt
-2 7 9
--1
+30 Beherit el territorio amenaza	
+31 archivos\zonas\zonaBeherit.txt	
+-1	
+2 7 9	
+-1	
 
-17 Eclipse infinito
-39 archivos\zonas\zonaEclipseInfinito.txt
-1 9
+17 Eclipse infinito	
+39 archivos\zonas\zonaEclipseInfinito.txt	
+-1	
+1 9	
 4
 
 5
@@ -138,27 +148,28 @@
 1000000000 99 4
 
 7
-22 capa de invisibilidad
-2 10
-0 0 0
-18 pergamino maldito
-2 15
-0 0 0
-18 pocion de energia
-1 25
-20 0 0
-17 pocion de fuerza
-1 20
-0 15 0
-15 pocion de vida
-1 25
-0 0 25
-26 pocion de furia demoniaca
-3 5
-30 30 -10
 22 caliz de la perdicion
-5 0
-50 50 50
+5 0 1 
+50 50 50 0 0
+22 capa de invisibilidad
+2 10 2
+0 0 0 0 1
+18 pergamino maldito
+2 15 1
+0 0 0 80 0
+18 pocion de energia
+1 25 1
+20 0 0 0 0
+17 pocion de fuerza
+1 20 1
+0 15 0 0 0
+26 pocion de furia demoniaca
+3 5 3
+30 30 -10 0 0
+15 pocion de vida
+1 25 1
+0 0 25 0 0
+
 
 6
 5 vida
@@ -198,17 +209,17 @@
 5
 
 7 Guerro
-7 20 10 2 10 10
+5 5 5 1 2 2
 
 5 Mago
-5 2 6 1 1 10
+3 2 4 5 3 3
 
 10 Invocador
-10 7 10 7 10 10
+3 1 5 5 2 4
 
 8 Cazador
-20 10 10 0 10 10
+4 3 4 2 5 4
 
 11 Alquimista
-8 2 2 15 20 20 
+2 2 4 4 4 4
 
