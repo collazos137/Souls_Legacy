@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "estructurasGenerales.h"
 #include "lista.h"
@@ -40,6 +41,7 @@ void modifyEnding( char * );
 void writeProfiles( char * );
 void readGame( char * );
 void overwriteGame( char * );
+void deleteGame();
 
 
 #endif

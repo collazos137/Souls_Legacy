@@ -178,61 +178,62 @@ void profileSelectionMenu (  ){
 #########################################################################################################################
 */
 
-void menuPrincipal(){
-	/*================================================================*/
-	/*variables de logica*/
-	int opcion;
-	int flag = 1;
-	/*================================================================*/
-
-	while (flag){
-		system("cls"); /*Borra lo anterior en consola*/
-		fflush(stdin); /*limpia el la entrada de datos por consola*/
-		readGrafix("archivos\\graficos\\graReinoTrilogy.txt");
-		printf("==================================================================================\n");
-		printf("================================= Menu principal =================================\n");
-		printf("|[1] Explorar|[2] Avanzar|[3] Estadisticas|[4] Inventario|[5] Bestiario|[6] Salir|\n");
-		printf("==================================================================================\n");
-		printf("ingrese una opcion: ");
-		scanf("%d", &opcion);/*captura una opcion a elegir*/
-		system("cls");
-		switch(opcion){
-			case 1:
-				if ( zones[myZone].boss == -1 || bosses[zones[myZone].boss].defeated ){
-					zones[myZone].explored = 1;
-					explorar();
-					printf("======================================================================\n");
-					continuar();
-				} else {
-					batalla( zones[myZone].boss );
-				}
-				break;
-			case 2:
-				moverseEntreZonas();
-				break;
-			case 3:
-                menuEstadisticas();
-                printf("======================================================================\n");
-				continuar();
-				break;
-			case 4:
-				mostrarInventario();
-				printf("======================================================================\n");
-				continuar();
-				break;
-			case 5:
-				bestiario();
-				printf("======================================================================\n");
-				continuar();
-				break;
-			case 6:
-				flag = 0;
-				break;
-			default:
-				printf("opcion no valida\n");
-		}
-		
-	}
+	void menuPrincipal(){	
+	/*================================================================*/	
+	/*variables de logica*/	
+	int opcion;	
+	int flag = 1;	
+	/*================================================================*/	
+	while (flag){	
+		system("cls"); /*Borra lo anterior en consola*/	
+		fflush(stdin); /*limpia el la entrada de datos por consola*/	
+		if ( zones[ myZone ].lenGrafFile != -1 ){	
+			readGrafix( zones[ myZone ].grafFile );	
+		}	
+		printf("==================================================================================\n");	
+		printf("================================= Menu principal =================================\n");	
+		printf("|[1] Explorar|[2] Avanzar|[3] Estadisticas|[4] Inventario|[5] Bestiario|[6] Salir|\n");	
+		printf("==================================================================================\n");	
+		printf("ingrese una opcion: ");	
+		scanf("%d", &opcion);/*captura una opcion a elegir*/	
+		system("cls");	
+		switch(opcion){	
+			case 1:	
+				zones[myZone].explored = 1;	
+				if ( zones[myZone].boss == -1 || bosses[zones[myZone].boss].defeated ){	
+					explorar();	
+					printf("======================================================================\n");	
+					continuar();	
+				} else {	
+					flag = batalla( zones[myZone].boss );	
+				}	
+				break;	
+			case 2:	
+				moverseEntreZonas();	
+				break;	
+			case 3:	
+                menuEstadisticas();	
+                printf("======================================================================\n");	
+				continuar();	
+				break;	
+			case 4:	
+				mostrarInventario();	
+				printf("======================================================================\n");	
+				continuar();	
+				break;	
+			case 5:	
+				bestiario();	
+				printf("======================================================================\n");	
+				continuar();	
+				break;	
+			case 6:	
+				flag = 0;	
+				break;	
+			default:	
+				printf("opcion no valida\n");	
+		}	
+			
+	}	
 }
 
 /*===============================================================================================================================================================================================================================*/
