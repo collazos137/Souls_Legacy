@@ -108,9 +108,9 @@ Entrada: dos cadenas de caracteres 'ending' (para evitar colisiones en el nombre
 void bigMenu( char* ending  ){
 	int option, flag = 1;
 	int i;
-	system("cls");
-	readGrafix("archivos\\graficos\\graMenu.txt");
 	while ( flag ){
+		system("cls");
+		readGrafix("archivos\\graficos\\graMenu.txt");
 		printf("Selecciona una opcion:\n");
 		
 		i = 0;
