@@ -12,7 +12,6 @@ typedef struct PlayerAtacks PlayerAtacks;
 typedef struct Player Player;
 typedef struct Profiles Profiles;
 typedef struct Clase Clase;
-typedef struct BuffBatalla BuffBatalla;
 
 struct Profiles{
 	char* namePlayer;
@@ -111,14 +110,6 @@ struct Clase{
 	char* name;
 	int lenName;
 	int* stats;
-};
-
-struct BuffBatalla{
-	int durationBuff;
-	int lastItem;
-	int fuerzaBuff;
-	int reducionBoss; 
-	int inmunidad;
 };
 
 #define maxInv 10

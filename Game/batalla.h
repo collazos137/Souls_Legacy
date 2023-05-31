@@ -10,6 +10,7 @@
 #include "manejoArchivos.h"
 
 typedef struct BattleAtack BattleAtack;
+typedef struct BuffBatalla BuffBatalla;
 
 struct BattleAtack{
 	int stamina;
@@ -17,6 +18,14 @@ struct BattleAtack{
 	int prob;
 	int damage;
 	char* name;
+};
+
+struct BuffBatalla{
+	int durationBuff;
+	int lastItem;
+	int fuerzaBuff;
+	int reducionBoss; 
+	int inmunidad;
 };
 
 /* funciones utilizadas en la batalla */
