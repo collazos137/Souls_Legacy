@@ -290,7 +290,6 @@ void readNonMutableItems( FILE* inputFile ){
 		fscanf( inputFile, "%d", &items[i].hpRec );
 		fscanf( inputFile, "%d", &items[i].redDamegeBoss);
 		fscanf( inputFile, "%d", &items[i].inmunidad);
-
 	}
 }
 

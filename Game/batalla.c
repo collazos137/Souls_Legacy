@@ -74,14 +74,13 @@ int batalla(int boss){
 
 		stamina += recuperacionStamina;
 		/* duracion de los Buffs*/
-		if(buff.durationBuff != 0)
+		if(buff.durationBuff)
 			--buff.durationBuff;
-		else{
+		if(!buff.durationBuff){
 			buff.fuerzaBuff = 0;
 			buff.reducionBoss = 0;
 			buff.inmunidad = 0;
 		}
-		
 		continuar();
 	}
 	/* si hpBoss < 0 && hp < 0, igual has muerto, por lo que da lo mismo: te ha vencido */
@@ -175,7 +174,8 @@ int turnoPropio(BattleAtack* ataquesPropios,int* danoPropio, int * stamina, int*
 }
 
 void inventarioBatalla(BattleAtack* ataquesPropios, int* stamina, int* hp, BuffBatalla* buff){
-	int i, opcion, item;
+	int i, opcion, item, j;
+	int hpaxu = 0, staminaxu = 0;
 	float axu;
 	system("cls");
 	fflush(stdin);
@@ -196,25 +196,37 @@ void inventarioBatalla(BattleAtack* ataquesPropios, int* stamina, int* hp, BuffB
 	}
 	printf("|[0] salir de inventario |[x] escoje el indice del objeto que deseas usar \n");
 	opcion = inquirirOpcion(player.inventory.size + 1 );
-	if(buff->durationBuff != 0){
-		printf("Aun esta activo el efecto de %s :: [%d] turnos mas para poder usar otro item", items[buff->lastItem].name ,buff->durationBuff);
+	if(buff->durationBuff && opcion > 0){
+		printf("Aun esta activo el efecto de %s :: [%d] turnos mas para poder usar otro item\n", items[buff->lastItem].name ,buff->durationBuff);
 	}else if(opcion > 0){
 		item = pop(&player.inventory, opcion - 1);
 		printf("haz elegido %s\n", items[item].name);
 		buff->lastItem = item;
-		buff->durationBuff = items[item].duration - 1;
+		buff->durationBuff = items[item].duration;
 		if(items[item].hpRec){
 			axu = items[item].hpRec;
-			*hp += (int)(*hp * axu/100);
+			hpaxu = (int)(*hp * axu/100);
+			*hp += hpaxu;
 		}
 		if(items[item].staminaRec){
 			axu = items[item].staminaRec;
-			*stamina += (int)(*stamina * axu/100);
+			staminaxu = (int)(*stamina * axu/100);
+			*stamina += staminaxu;
 		}
 		buff->fuerzaBuff = items[item].danoPot;
 		buff->reducionBoss = items[item].redDamegeBoss;
-		buff->inmunidad= items[item].inmunidad;
+		buff->inmunidad = items[item].inmunidad;
 		--player.nInventory;
+		printf("\n|========================|\n");
+		printf("| vida       += %7d  |\n| stamina    += %7d  |\n| fuerza     += %7d %%|\n| AtaqueBoss -= %7d %%|\n", hpaxu, staminaxu, items[item].danoPot, items[item].redDamegeBoss);
+		if(buff->inmunidad){
+			printf("| Inmunidad  :     Activa|");
+		}else{
+			printf("| Inmunidad  :   InActiva|");
+		}
+		printf("\n");
+		printf("|========================|\n");
+
 	}
 	continuar();
 }
