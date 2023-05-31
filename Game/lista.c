@@ -72,6 +72,10 @@ void pushSort(List* list, int num){
     list->size++;
 }
 
+
+/*
+Elimina un elemento de lista dada su posicion
+*/
 int pop(List* list, int num){
 	int ans = -1;
 	if(num < list->size && num >= 0){
