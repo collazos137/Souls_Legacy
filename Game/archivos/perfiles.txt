@@ -1,6 +1,6 @@
-004
+001
 1
 
-5 juan
-38 archivos\perfiles\soulsProfile004.txt
+9 asterion
+38 archivos\perfiles\soulsProfile001.txt
 

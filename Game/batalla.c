@@ -104,8 +104,9 @@ int batalla(int boss){
 		printf("\n%s te ha vencido\n\n",bosses[boss].name);
 		printf("Tu fin se acerca.\n");	
 		res = 0;	
-		deleteGame();	
-		--nProfiles;	
+		deleteGame();
+		--nProfiles;
+		continuar();
 	}	
 	free( ataquesPropios );	
 	return res;
