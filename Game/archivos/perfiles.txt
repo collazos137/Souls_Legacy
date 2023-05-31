@@ -1,6 +1,18 @@
-001
-1
+005
+5
+
+5 dios
+38 archivos\perfiles\soulsProfile005.txt
+
+6 dioos
+38 archivos\perfiles\soulsProfile003.txt
 
 9 asterion
 38 archivos\perfiles\soulsProfile001.txt
+
+5 diso
+38 archivos\perfiles\soulsProfile002.txt
+
+4 sio
+38 archivos\perfiles\soulsProfile004.txt
 

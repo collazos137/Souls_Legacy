@@ -243,7 +243,6 @@ void readNonMutableFile(){
 }
 
 void readNonMutableClass(FILE* inputFile){
-	int nClases;
 	fscanf(inputFile, "%d", &nClases);
 	
 	clases = (Clase*) malloc ( sizeof ( Clase ) * nClases ); 

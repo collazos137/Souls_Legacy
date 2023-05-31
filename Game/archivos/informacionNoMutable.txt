@@ -10,7 +10,7 @@
 41 archivos\zonas\zonaDesiertoMontanoso.txt	
 43 archivos\graficos\graDesiertoMontanoso.txt
 1 2
-0	
+3	
 
 26 Campamento de exploracion	
 45 archivos\zonas\zonaCampamentoExploracion.txt	
@@ -22,7 +22,7 @@
 36 archivos\zonas\zonaBosqueMagico.txt	
 38 archivos\graficos\graBosqueMagico.txt	
 1 4
-1	
+2
 
 16 Valle corrosivo	
 38 archivos\zonas\zonaValleCorrosivo.txt	
@@ -34,7 +34,7 @@
 38 archivos\zonas\zonaTierrasMuertas.txt	
 40 archivos\graficos\graTierrasMuertas.txt
 2 4 6	
-2	
+0
 
 17 Manantial de paz	
 36 archivos\zonas\zonaManantialPaz.txt	
@@ -46,7 +46,7 @@
 29 archivos\zonas\zonaElfos.txt	
 36 archivos\graficos\graReinoElfos.txt
 2 6 8	
-3	
+4
 
 30 Beherit el territorio amenaza	
 31 archivos\zonas\zonaBeherit.txt	
@@ -58,41 +58,13 @@
 39 archivos\zonas\zonaEclipseInfinito.txt	
 41 archivos\graficos\graEclipseInfinito.txt
 1 8
-4
+1
 
 5
 
-23 La lacra de las cuevas
-2 2
-500
-159 Esta bestia antigua, acecha a los mineros que tratan de obtener recursos de esa cueva rica en minerales.por las noches ataca y roba a los forasteros cercanos.
-39 archivos\bosses\lacra\entradaLacra.txt
-38 archivos\bosses\lacra\salidaLacra.txt
-2
-
-18 Cabezazo de lacra
-100 100 60
-18 Navajazo de lacra
-300 60 40
-
-35 El sabio viejo ermitano del bosque
-3 1
-20000
-228 utiliza su amplia sabiduria en ciencias y magias arcanas de la naturaleza para alejarte de sus tierras y que no vuelvas a ser una posible amenaza para el bosque. toda persona que ha entrado al bosque, no ha vuelto en una pieza.
-49 archivos\bosses\viejoSabio\entradaViejoSabio.txt
-48 archivos\bosses\viejoSabio\salidaViejoSabio.txt
-3
-
-22 Filo de hojas carmesi
-500 90 40
-15 Fulgor alboreo
-800 70 35
-22 El llamado del bosque
-1500 50 25
-
 41 Azkel el prodigio de las tierras muertas
 4 5
-30000
+10000
 179 Azkel aquel que derroto al ejército de vikingos del legendario Varuna Kal, el único superviviente de aquella guerra. cualquier persona que ha dignado a hacerle cara, ha muerto.
 39 archivos\bosses\askel\entradaAskel.txt
 38 archivos\bosses\askel\salidaAskel.txt
@@ -106,23 +78,6 @@
 3500 70 20
 15 Esencia oscura
 7000 50 10
-
-32 Ninkasi la promesa de los elfos
-5 0
-400000
-198 la guardia principal de toda la cordillera elfica, protectora de el caliz de la perdicion, aquel que tome del caliz sera consumido por los espiritus de los elfos oscuros, a cambio de un gran poder.
-43 archivos\bosses\ninkasi\entradaNinkasi.txt
-42 archivos\bosses\ninkasi\salidaNinkasi.txt
-4
-
-22 Precicion de Artemisa
-7500 100 28
-21 El filo de la aurora
-10000 75 28
-24 Caza de la noche entera
-15000 50 28
-15 Flecha de eter
-25000 25 16
 
 59 Berserk y Femto, los expulsados del firmamento y el Averno
 6 -1
@@ -146,6 +101,51 @@
 15000 80 15
 43 Berserk y Femto: Juicio celestial absoluto
 1000000000 99 4
+
+35 El sabio viejo ermitano del bosque
+3 1
+20000
+228 utiliza su amplia sabiduria en ciencias y magias arcanas de la naturaleza para alejarte de sus tierras y que no vuelvas a ser una posible amenaza para el bosque. toda persona que ha entrado al bosque, no ha vuelto en una pieza.
+49 archivos\bosses\viejoSabio\entradaViejoSabio.txt
+48 archivos\bosses\viejoSabio\salidaViejoSabio.txt
+3
+
+22 Filo de hojas carmesi
+500 90 40
+15 Fulgor alboreo
+800 70 35
+22 El llamado del bosque
+1500 50 25
+
+23 La lacra de las cuevas
+2 2
+500
+159 Esta bestia antigua, acecha a los mineros que tratan de obtener recursos de esa cueva rica en minerales.por las noches ataca y roba a los forasteros cercanos.
+39 archivos\bosses\lacra\entradaLacra.txt
+38 archivos\bosses\lacra\salidaLacra.txt
+2
+
+18 Cabezazo de lacra
+100 100 60
+18 Navajazo de lacra
+300 60 40
+
+32 Ninkasi la promesa de los elfos
+5 0
+40000
+198 la guardia principal de toda la cordillera elfica, protectora de el caliz de la perdicion, aquel que tome del caliz sera consumido por los espiritus de los elfos oscuros, a cambio de un gran poder.
+43 archivos\bosses\ninkasi\entradaNinkasi.txt
+42 archivos\bosses\ninkasi\salidaNinkasi.txt
+4
+
+22 Precicion de Artemisa
+7500 100 28
+21 El filo de la aurora
+10000 75 28
+24 Caza de la noche entera
+15000 50 28
+15 Flecha de eter
+25000 25 16
 
 7
 22 caliz de la perdicion
@@ -206,7 +206,7 @@
 2 2 450 450
 4 2 30 2
 
-5
+6
 
 7 Guerro
 5 5 5 1 2 2
@@ -222,4 +222,7 @@
 
 11 Alquimista
 2 2 4 4 4 4
+
+5 Dios
+50 50 50 50 50 50
 

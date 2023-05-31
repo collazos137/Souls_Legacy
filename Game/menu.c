@@ -45,12 +45,12 @@ void choseClass(){
 	int i, j;
 	system("cls");
 	readGrafix("archivos\\graficos\\graMenuClases.txt");
-	for(i = 0; i < 5; ++i){
+	for(i = 0; i < nClases; ++i){
 		printf("|[%d] %s", i, (clases[i]).name);
 	}
 	printf("|%*s|\n", (player.stats[1]).lenName + 3, "Estadisticas");
 	for(i = 0; i < player.lenStats; ++i){
-		for(j = 0; j < 5 ; ++j){
+		for(j = 0; j < nClases ; ++j){
 			printf("|%*i", (clases[j]).lenName + 3, (clases[j]).stats[i]);
 		}
 		printf("|%*s|\n",(player.stats[1]).lenName + 3, (player.stats[i]).name);
@@ -58,7 +58,7 @@ void choseClass(){
 	printf("==================================================================================\n");
 	printf("=== (Al iniciar con una clase obtendras la bonificacion escifica de esa clase) ===\n");
 	printf("==================================================================================\n");
-	int option = inquirirOpcion(5);
+	int option = inquirirOpcion(nClases);
 	system("cls");
 	printf("has elegido la clase %s\n", clases[option].name);
 	printf("|======================|\n");

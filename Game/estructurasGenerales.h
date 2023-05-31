@@ -141,7 +141,10 @@ int nItems;
 Player player;
 
 /* clases de jugadores */
-Clase *clases; 
+Clase *clases;
+
+/* cantidad de clases de jugadores */
+int nClases;
 
 /* variable global que almacena los perfiles jugables */
 Profiles *perf;
